@@ -9,7 +9,6 @@ import numpy as np
 
 class Settings:
     def __init__(self):
-        # 屏幕属性
         self.width = 28
         self.height = 28
         self.rect_len = 15
