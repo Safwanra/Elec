@@ -1,7 +1,7 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Wed May 16 15:22:20 2018
-
 @author: zou
 """
 
@@ -23,13 +23,11 @@ blue = pygame.Color(32, 178, 170)
 bright_blue = pygame.Color(32, 200, 200)
 yellow = pygame.Color(255, 205, 0)
 bright_yellow = pygame.Color(255, 255, 0)
-
-game = Game()
-rect_len = game.settings.rect_len
-snake = game.snake
 pygame.init()
 fpsClock = pygame.time.Clock()
-screen = pygame.display.set_mode((game.settings.width * 15, game.settings.height * 15))
+from game import Settings
+settings = Settings()
+screen = pygame.display.set_mode((settings.width * 15, settings.height * 15))
 pygame.display.set_caption('Gluttonous')
 
 crash_sound = pygame.mixer.Sound('./sound/crash.wav')
@@ -48,9 +46,13 @@ def message_display(text, x, y, color=black):
     pygame.display.update()
 
 
-def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None):
+def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None, answer = None):#####
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
+    if answer != None:
+        global wrap
+        wrap = answer
+        
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
         pygame.draw.rect(screen, active_color, (x, y, w, h))
         if click[0] == 1 and action != None:
@@ -73,8 +75,9 @@ def quitgame():
 
 
 def crash():
+
     pygame.mixer.Sound.play(crash_sound)
-    message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
+    message_display('crashed', settings.width / 2 * 15, settings.height / 3 * 15, white)
     time.sleep(1)
 
 
@@ -87,23 +90,27 @@ def initial_interface():
                 pygame.quit()
 
         screen.fill(white)
-        message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
-
-        button('Go!', 80, 240, 80, 40, green, bright_green, game_loop, 'human')
+        message_display('Gluttonous', settings.width / 2 * 15, settings.height / 4 * 15)
+        button('No wrap', 80, 240, 80, 40, green, bright_green, game_loop, 'human', False)
         button('Quit', 270, 240, 80, 40, red, bright_red, quitgame)
-
+        button('Wrap', 80+190/2, 300, 80, 40, green, bright_green, game_loop, 'human', True)####
         pygame.display.update()
         pygame.time.Clock().tick(15)
 
 
 def game_loop(player, fps=10):
+    from game import Game ######
+    global game
+    game = Game(wrap)
     game.restart_game()
-
+    rect_len = game.settings.rect_len
+    snake = game.snake
+    
     while not game.game_end():
 
         pygame.event.pump()
 
-        move = human_move()
+        move = human_move(snake)
         fps = 5
 
         game.do_move(move)
@@ -121,7 +128,7 @@ def game_loop(player, fps=10):
     crash()
 
 
-def human_move():
+def human_move(snake):
     direction = snake.facing
 
     for event in pygame.event.get():

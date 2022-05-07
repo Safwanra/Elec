@@ -13,9 +13,9 @@ class Settings:
         self.height = 28
         self.rect_len = 15
 
-##from main import wrap####
+#from main import wrap
 class Snake:
-    def __init__(self): #####
+    def __init__(self, wrap): #####
         self.settings = Settings()
         self.image_up = pygame.image.load('images/head_up.bmp')
         self.image_down = pygame.image.load('images/head_down.bmp')
@@ -30,7 +30,7 @@ class Snake:
         self.image_body = pygame.image.load('images/body.bmp')
 
         self.facing = "right"
-        self.wrap = True
+        self.wrap = wrap
         self.initialize()
 
     def initialize(self):
@@ -118,15 +118,17 @@ class Strawberry():
 class Game:
     """
     """
-    def __init__(self):######
+    def __init__(self, wrap):######
         self.settings = Settings()
-        self.snake = Snake()
+        self.snake = Snake(wrap)
         self.strawberry = Strawberry(self.settings)
         self.move_dict = {0 : 'up',
                           1 : 'down',
                           2 : 'left',
                           3 : 'right'}
-        self.wrap = True    
+        self.wrap = wrap
+
+
         
     def restart_game(self):
         self.snake.initialize()
