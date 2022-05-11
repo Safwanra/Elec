@@ -89,7 +89,7 @@ def crash():
     end.title('Restart')
     end.geometry('500x350')
 
-    question = Label(end, text='Would you like to play again ot go to home page?', font=('bold', 12))
+    question = Label(end, text='Would you like to play again or go to home page?', font=('bold', 12))
     question.grid(row=0, column=1, columnspan=5)
 
     Home = Button(end, text='Home', padx=20, pady=10, font=12, command=lambda : initial_interface())
@@ -129,7 +129,7 @@ def initial_interface():  # homepage
         gameDisplay.blit(SnakeImg, (x, y))
         # message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
 
-        button('Go!', 50, 480, 160, 40, green, bright_green, game_loop, 'human')
+        button('Start!', 50, 480, 160, 40, green, bright_green, game_loop, 'human')
         button('Quit', 320, 480, 160, 40, red, bright_red, quitgame)
 
         pygame.display.update()
@@ -143,7 +143,7 @@ def game_loop(player, fps=10):
         pygame.event.pump()
 
         move = human_move()
-        fps = 5
+        fps = 6
 
         game.do_move(move)
 
