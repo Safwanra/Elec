@@ -5,6 +5,8 @@ Created on Wed May 16 15:22:20 2018
 @author: zou
 """
 from tkinter import *
+from tkinter import Button
+
 import pygame
 import time
 from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN, K_ESCAPE
@@ -32,7 +34,7 @@ fpsClock = pygame.time.Clock()
 screen = pygame.display.set_mode((game.settings.width * 15, game.settings.height * 15))
 pygame.display.set_caption('Snake Pass')
 
-crash_sound = pygame.mixer.Sound('./sound/end.wav')
+crash_sound = pygame.mixer.Sound('./sound/crash.wav')
 
 
 def text_objects(text, font, color=black):
@@ -70,12 +72,9 @@ def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter
 def quitgame():
     pygame.quit()
     quit()
-def Close():
-    end.destroy()
-end = Tk()
-end.bg = 'black'
-end.title('Restart')
-end.geometry('500x350')
+
+
+
 def crash():
     pygame.mixer.Sound.play(crash_sound)
     message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
@@ -83,30 +82,42 @@ def crash():
     while i < 999999:
         i = i + 1
 
+
+
     end = Tk()
     #end.iconbitmap('images/body.bmp')
-    end.bg = 'black'
+
     end.title('Restart')
     end.geometry('500x350')
+    #end.configure(bg='you_lose.jpg')
+    #bg = PhotoImage(file='images/snakepass.jpg')
 
-    question = Label(end, text='Would you like to play again or go to home page?', font=('bold', 12))
+
+    question = Label(end, text='Would you like to play again ot go to home page?', font=('bold', 12))
+    #question=Label(end, image=bg)
     question.grid(row=0, column=1, columnspan=5)
 
-    Home = Button(end, text='Home', padx=20, pady=10, font=12, command=lambda : initial_interface())
-    Home = Button(end, text='Home', padx=20, pady=10, font=12, command=lambda : Close())
-    no = Button(end, text='No', padx=20, pady=10, font=12, command=exit)
+    #Home = Button(end, text='Home', padx=20, pady=10, font=12, command=lambda : initial_interface())
 
-    Home.grid(row=3, column=1)
+    #Home = Button(end, text='Home', padx=20, pady=10, font=12, command=lambda : Close())
+    no = Button(end, text='No', padx=20, pady=10, font=12, command=exit)
+    exit_button= Button(end,text='Home', padx=20, pady=10, font=12, command= end.destroy)
+    #exit_button = Button(end, text="Exit", command=end.destroy)
+    #exit_button.pack(pady=20)
+
+    #Home.grid(row=3, column=1)
     no.grid(row=3, column=4)
+    exit_button.grid(row=3, column=1)
 
     pad1 = Label(end, padx=10).grid(row=0, column=0)
     pad2 = Label(end).grid(row=2, column=0)
 
+    #end.after(Home  , lambda: end.destroy())  # time in ms
+
     end.mainloop()
-    end.after(2000, end.destroy)
 
 
-    time.sleep(1)
+
 # crash message
 display_width = 900
 display_height = 550
@@ -118,8 +129,8 @@ def initial_interface():  # homepage
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-        screen.fill(red)
-        SnakeImg = pygame.image.load('images/snakepass.jpg')
+
+        SnakeImg = pygame.image.load('images/background.png')
         SnakeImg = pygame.transform.scale(SnakeImg, (display_width, display_height))
 
 
@@ -129,7 +140,7 @@ def initial_interface():  # homepage
         gameDisplay.blit(SnakeImg, (x, y))
         # message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
 
-        button('Start!', 50, 480, 160, 40, green, bright_green, game_loop, 'human')
+        button('Go!', 50, 480, 160, 40, green, bright_green, game_loop, 'human')
         button('Quit', 320, 480, 160, 40, red, bright_red, quitgame)
 
         pygame.display.update()
@@ -143,9 +154,10 @@ def game_loop(player, fps=10):
         pygame.event.pump()
 
         move = human_move()
-        fps = 6
+        fps = 5
 
         game.do_move(move)
+
 
         screen.fill(black)
 
