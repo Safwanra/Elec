@@ -11,6 +11,8 @@ import pygame
 import time
 from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN, K_ESCAPE
 from pygame.locals import QUIT
+from PIL import Image
+from PIL import ImageTk
 
 from game import Game
 
@@ -35,8 +37,27 @@ screen = pygame.display.set_mode((game.settings.width * 15, game.settings.height
 pygame.display.set_caption('Snake Pass')
 
 crash_sound = pygame.mixer.Sound('./sound/crash.wav')
+class CanvasButton:
+    def __init__(self, canvas, root):
+        self.canvas = canvas
+        self.root=root
 
+        self.button = Button(canvas, text='Home',
+                                command=self.buttonclicked)
+        self.id = canvas.create_window(100, 300, width=100, height=50,
+                                       window=self.button)
+    def buttonclicked(self):
+        self.root.destroy()
 
+class ExitButton:
+    def __init__(self, canvas):
+        self.canvas = canvas
+        self.button = Button(canvas, text='Exit',
+                                command=self.buttonclicked)
+        self.id = canvas.create_window(400, 300, width=100, height=50,
+                                       window=self.button)
+    def buttonclicked(self):
+        exit()
 def text_objects(text, font, color=black):
     text_surface = font.render(text, True, color)
     return text_surface, text_surface.get_rect()
@@ -81,40 +102,29 @@ def crash():
     i = 0
     while i < 999999:
         i = i + 1
+    global root
+    root = Tk()
+    root.resizable(width=False, height=False)
+    root.wm_attributes("-topmost", 1)
+    root.title('HAHA NOOB')
+
+    imgpath = 'images/you_lose.png'
+    img = Image.open(imgpath)
+    photo = ImageTk.PhotoImage(img)
 
 
+    canvas = Canvas(root, bd=0, highlightthickness=0)
+    canvas.pack()
+    canvas.create_image(250,175, image=photo)
+    canvas.config(width=500, height=350)
 
-    end = Tk()
-    #end.iconbitmap('images/body.bmp')
-
-    end.title('Restart')
-    end.geometry('500x350')
-    #end.configure(bg='you_lose.jpg')
-    #bg = PhotoImage(file='images/snakepass.jpg')
+    CanvasButton(canvas,root)
+    ExitButton(canvas)# create a clickable button on the canvas
 
 
-    question = Label(end, text='Would you like to play again ot go to home page?', font=('bold', 12))
-    #question=Label(end, image=bg)
-    question.grid(row=0, column=1, columnspan=5)
+    root.mainloop()
 
-    #Home = Button(end, text='Home', padx=20, pady=10, font=12, command=lambda : initial_interface())
 
-    #Home = Button(end, text='Home', padx=20, pady=10, font=12, command=lambda : Close())
-    no = Button(end, text='No', padx=20, pady=10, font=12, command=exit)
-    exit_button= Button(end,text='Home', padx=20, pady=10, font=12, command= end.destroy)
-    #exit_button = Button(end, text="Exit", command=end.destroy)
-    #exit_button.pack(pady=20)
-
-    #Home.grid(row=3, column=1)
-    no.grid(row=3, column=4)
-    exit_button.grid(row=3, column=1)
-
-    pad1 = Label(end, padx=10).grid(row=0, column=0)
-    pad2 = Label(end).grid(row=2, column=0)
-
-    #end.after(Home  , lambda: end.destroy())  # time in ms
-
-    end.mainloop()
 
 
 
