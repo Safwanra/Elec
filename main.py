@@ -4,14 +4,18 @@
 Created on Wed May 16 15:22:20 2018
 @author: zou
 """
-
+from pickle import TRUE
 import pygame
 import time
 from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN, K_ESCAPE
 from pygame.locals import QUIT
-
+#MODIFIED
+from os import path
+import tkinter as tk
+from tkinter import *
+#---------------------
 from game import Game
-
+speed = "10"
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
 
@@ -19,6 +23,7 @@ green = pygame.Color(0, 200, 0)
 bright_green = pygame.Color(0, 255, 0)
 red = pygame.Color(200, 0, 0)
 bright_red = pygame.Color(255, 0, 0)
+grey = pygame.Color(80, 80, 80)
 blue = pygame.Color(32, 178, 170)
 bright_blue = pygame.Color(32, 200, 200)
 yellow = pygame.Color(255, 205, 0)
@@ -68,20 +73,51 @@ def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter
     TextRect.center = (x + (w / 2), y + (h / 2))
     screen.blit(TextSurf, TextRect)
 
+def tk_speed():
+    global root
+    root = Tk()
+    root.geometry("350x170")
+    root.title("Speed")
+
+
+    def click():
+        user_text = T.get()
+        #myLabel = Label(root, text=user_text)
+        #myLabel.pack()
+        if user_text.isdigit() and int(user_text)<=19 and int(user_text)>=10:
+            global speed_button
+            speed_button = user_text
+            global speed
+            speed = user_text
+            root.destroy()
+    one = Label(root, text = "Enter speed \n between 10 and 19")
+    one.config(font=("Courier", 17))
+    T = Entry(root, width = 10, borderwidth=4, justify='center')
+
+    b1 = Button(root, text = "Submit", command = click)
+    b2 = Button(root, text = "Exit", command = root.destroy)
+
+    one.pack()
+    T.pack()
+    b1.pack()
+    b2.pack()
+    tk.mainloop()
+    print(speed)
 
 def quitgame():
     pygame.quit()
     quit()
 
 
-def crash():
-
+def crash(x, y, w, h, inactive_color, active_color):
     pygame.mixer.Sound.play(crash_sound)
     message_display('crashed', settings.width / 2 * 15, settings.height / 3 * 15, white)
     time.sleep(1)
 
 
 def initial_interface():
+    global speed_button
+    speed_button = "Speed"
     intro = True
     while intro:
 
@@ -91,6 +127,7 @@ def initial_interface():
 
         screen.fill(white)
         message_display('Gluttonous', settings.width / 2 * 15, settings.height / 4 * 15)
+        button(speed_button, 80, 190, 80, 40, yellow, bright_yellow, tk_speed)
         button('No wrap', 80, 240, 80, 40, green, bright_green, game_loop, 'human', False)
         button('Quit', 270, 240, 80, 40, red, bright_red, quitgame)
         button('Wrap', 80+190/2, 300, 80, 40, green, bright_green, game_loop, 'human', True)####
@@ -101,7 +138,7 @@ def initial_interface():
 def game_loop(player, fps=10):
     from game import Game ######
     global game
-    game = Game(wrap)
+    game = Game(wrap, speed)
     game.restart_game()
     rect_len = game.settings.rect_len
     snake = game.snake
@@ -111,7 +148,7 @@ def game_loop(player, fps=10):
         pygame.event.pump()
 
         move = human_move(snake)
-        fps = 5
+        fps = int(speed) #####thing
 
         game.do_move(move)
 

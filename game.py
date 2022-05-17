@@ -118,7 +118,7 @@ class Strawberry():
 class Game:
     """
     """
-    def __init__(self, wrap):######
+    def __init__(self, wrap, speed):######
         self.settings = Settings()
         self.snake = Snake(wrap)
         self.strawberry = Strawberry(self.settings)
@@ -127,6 +127,7 @@ class Game:
                           2 : 'left',
                           3 : 'right'}
         self.wrap = wrap
+        self.speed = int(speed)-9
 
 
         
@@ -171,7 +172,7 @@ class Game:
         if self.snake.position == self.strawberry.position:
             self.strawberry.random_pos(self.snake)
             reward = 1
-            self.snake.score += 1
+            self.snake.score = self.snake.score + 1*self.speed
         else:
             self.snake.segments.pop()
             reward = 0
