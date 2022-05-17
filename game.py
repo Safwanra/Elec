@@ -13,7 +13,7 @@ class Settings:
         self.width = 28
         self.height = 28
         self.rect_len = 15
-#Initialising the class Settings -> used to set direction of snake's head and tail.
+#Initialising the class Settings -> used to set the direction of snake's head and tail.
 class Snake:
     def __init__(self):
         
