@@ -1,7 +1,7 @@
 import pygame, random
 import numpy as np
 
-
+# Initialising the calss Settings -> used to set size of game screen.
 class Settings:
     def __init__(self):
         self.width = 42
@@ -10,7 +10,7 @@ class Settings:
 
 
  UIbranch
-# from main import wrap
+# from main import wrap # Initialising the calss Settings -> used to set direction of snake's head and tail.
 class Snake:
     def __init__(self, wrap):  #####
 =======
@@ -34,15 +34,15 @@ class Snake:
         self.facing = "right"
         self.wrap = wrap
         self.initialize()
-
+# Initialising the function -> used to set the snake's positon and the game score when start the game.
     def initialize(self):
         self.position = [6, 6]
         self.segments = [[6 - i, 6] for i in range(3)]
         self.score = 0
-
+ # Blit_body function -> used to set the snake's body in the screen during the play game.
     def blit_body(self, x, y, screen):
         screen.blit(self.image_body, (x, y))
-
+# Blit_head function -> used to set the snake's head how to move during the play game.
     def blit_head(self, x, y, screen):
         if self.facing == "up":
             screen.blit(self.image_up, (x, y))
@@ -52,7 +52,7 @@ class Snake:
             screen.blit(self.image_left, (x, y))
         else:
             screen.blit(self.image_right, (x, y))
-
+# Blit_tail function -> used to set the snake's tail how to move during the play game.
     def blit_tail(self, x, y, screen):
         tail_direction = [self.segments[-2][i] - self.segments[-1][i] for i in range(2)]
 
@@ -64,13 +64,13 @@ class Snake:
             screen.blit(self.tail_left, (x, y))
         else:
             screen.blit(self.tail_right, (x, y))
-
+# Blit funcintion -> used to set the snake's move range in the screen.
     def blit(self, rect_len, screen):
         self.blit_head(self.segments[0][0] * rect_len, self.segments[0][1] * rect_len, screen)
         for position in self.segments[1:-1]:
             self.blit_body(position[0] * rect_len, position[1] * rect_len, screen)
         self.blit_tail(self.segments[-1][0] * rect_len, self.segments[-1][1] * rect_len, screen)
-
+# Update function -> used to set the  when snake's move the position will change.
     def update(self):
  UIbranch
         if self.facing == 'right':  ######
@@ -106,7 +106,7 @@ class Snake:
  main
         self.segments.insert(0, list(self.position))
 
-
+# Initialising the calss Settings -> used to Randomly generate strawberries on the screen.
 class Strawberry():
     def __init__(self, settings):
         self.settings = settings
@@ -137,7 +137,7 @@ class Strawberry():
     def initialize(self):
         self.position = [15, 10]
 
-
+# Initialising the calss Settings -> used to set the  assign values for setting ,snake strawberry and move_dict.
 class Game:
     """
     """
@@ -164,7 +164,7 @@ class Game:
         self.wrap = wrap
 
 
-        
+# When the game angin, assign values for snake  and strawberry angin.
  main
     def restart_game(self):
         self.snake.initialize()
@@ -187,7 +187,7 @@ class Game:
     def direction_to_int(self, direction):
         direction_dict = {value: key for key, value in self.move_dict.items()}
         return direction_dict[direction]
-
+# Do_move function -> used to When I hit the direction key on the keyboard, the snake will move in the specified direction.
     def do_move(self, move):
         move_dict = self.move_dict
 
@@ -203,7 +203,7 @@ class Game:
             self.snake.facing = change_direction
 
         self.snake.update()
-
+        # Used to set the how to add the score.
         if self.snake.position == self.strawberry.position:
             self.strawberry.random_pos(self.snake)
             reward = 1
@@ -211,7 +211,7 @@ class Game:
         else:
             self.snake.segments.pop()
             reward = 0
-
+        # Game_end function -> used to set when the sanke touch the edge of screen and the game end.
         if self.game_end():
             return -1
 
@@ -232,7 +232,7 @@ class Game:
             end = True
 
         return end
-
+# Blit_score function -> used to set  when the game over the score will display in the screen.
     def blit_score(self, color, screen):
         font = pygame.font.SysFont(None, 25)
         text = font.render('Score: ' + str(self.snake.score), True, color)
