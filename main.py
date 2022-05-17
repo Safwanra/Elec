@@ -27,17 +27,16 @@ blue = pygame.Color(32, 178, 170)
 bright_blue = pygame.Color(32, 200, 200)
 yellow = pygame.Color(255, 205, 0)
 bright_yellow = pygame.Color(255, 255, 0)
-
-game = Game()
-rect_len = game.settings.rect_len
-snake = game.snake
 pygame.init()
 fpsClock = pygame.time.Clock()
-screen = pygame.display.set_mode((game.settings.width * 15, game.settings.height * 15))
-pygame.display.set_caption('Snake Pass')
+from game import Settings
+
+settings = Settings()
+screen = pygame.display.set_mode((settings.width * 15, settings.height * 15))
+pygame.display.set_caption('Gluttonous')
 
 crash_sound = pygame.mixer.Sound('./sound/crash.wav')
-class CanvasButton:
+class CanvasButton:#home button class
     def __init__(self, canvas, root):
         self.canvas = canvas
         self.root=root
@@ -49,7 +48,7 @@ class CanvasButton:
     def buttonclicked(self):
         self.root.destroy()
 
-class ExitButton:
+class ExitButton:#exit button class
     def __init__(self, canvas):
         self.canvas = canvas
         self.button = Button(canvas, text='Exit',
@@ -71,9 +70,13 @@ def message_display(text, x, y, color=black):
     pygame.display.update()
 
 
-def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None):
+def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None, answer=None):  #####
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
+    if answer != None:
+        global wrap
+        wrap = answer
+
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
         pygame.draw.rect(screen, active_color, (x, y, w, h))
         if click[0] == 1 and action != None:
@@ -98,7 +101,7 @@ def quitgame():
 
 def crash():
     pygame.mixer.Sound.play(crash_sound)
-    message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
+    message_display('CRASHED!', game.settings.width / 2 * 15, game.settings.height / 3 * 15, bright_red)
     i = 0
     while i < 999999:
         i = i + 1
@@ -108,7 +111,7 @@ def crash():
     root.wm_attributes("-topmost", 1)
     root.title('HAHA NOOB')
 
-    imgpath = 'images/you_lose.png'
+    imgpath = 'images/you_lose.png'#for some ungodly reason it only works with pngs and not jpgs
     img = Image.open(imgpath)
     photo = ImageTk.PhotoImage(img)
 
@@ -152,22 +155,29 @@ def initial_interface():  # homepage
 
         button('Go!', 50, 480, 160, 40, green, bright_green, game_loop, 'human')
         button('Quit', 320, 480, 160, 40, red, bright_red, quitgame)
+        button('No wrap', 80, 420, 80, 40, green, bright_green, game_loop, 'human', False)
+        button('Wrap', 350, 420, 80, 40, green, bright_green, game_loop, 'human', True)
+
 
         pygame.display.update()
         pygame.time.Clock().tick(15)
 
 
 def game_loop(player, fps=10):
+    from game import Game  ######
+    global game
+    game = Game(wrap)
     game.restart_game()
+    rect_len = game.settings.rect_len
+    snake = game.snake
 
     while not game.game_end():
         pygame.event.pump()
 
-        move = human_move()
+        move = human_move(snake)
         fps = 5
 
         game.do_move(move)
-
 
         screen.fill(black)
 
@@ -176,14 +186,13 @@ def game_loop(player, fps=10):
         game.blit_score(white, screen)
 
         pygame.display.flip()
-        gameDisplay = pygame.display.set_mode((display_width, display_height))
 
         fpsClock.tick(fps)
 
     crash()
 
 
-def human_move():
+def human_move(snake):
     direction = snake.facing
 
     for event in pygame.event.get():
