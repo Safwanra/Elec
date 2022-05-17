@@ -9,13 +9,13 @@ import numpy as np
 
 class Settings:
     def __init__(self):
+        # 屏幕属性
         self.width = 28
         self.height = 28
         self.rect_len = 15
 
 class Snake:
     def __init__(self):
-        
         self.image_up = pygame.image.load('images/head_up.bmp')
         self.image_down = pygame.image.load('images/head_down.bmp')
         self.image_left = pygame.image.load('images/head_left.bmp')
@@ -25,10 +25,10 @@ class Snake:
         self.tail_down = pygame.image.load('images/tail_down.bmp')
         self.tail_left = pygame.image.load('images/tail_left.bmp')
         self.tail_right = pygame.image.load('images/tail_right.bmp')
-            
+        
         self.image_body = pygame.image.load('images/body.bmp')
 
-        self.facing = "right"
+        self.facing = "down"
         self.initialize()
 
     def initialize(self):
@@ -117,7 +117,8 @@ class Game:
         self.move_dict = {0 : 'up',
                           1 : 'down',
                           2 : 'left',
-                          3 : 'right'}       
+                          3 : 'right'}      
+        
         
     def restart_game(self):
         self.snake.initialize()
@@ -165,10 +166,11 @@ class Game:
             self.snake.segments.pop()
             reward = 0
                 
+        #MODIFIED ORIGINAL 'return' CODES
         if self.game_end():
-            return -1
-                    
-        return reward
+            return -1, self.snake.score
+        
+        return reward, False
     
     def game_end(self):
         end = False
@@ -185,4 +187,3 @@ class Game:
         font = pygame.font.SysFont(None, 25)
         text = font.render('Score: ' + str(self.snake.score), True, color)
         screen.blit(text, (0, 0))
-
