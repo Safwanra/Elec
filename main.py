@@ -1,7 +1,7 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Wed May 16 15:22:20 2018
-
 @author: zou
 """
 from tkinter import *
@@ -30,7 +30,10 @@ bright_yellow = pygame.Color(255, 255, 0)
 pygame.init()
 fpsClock = pygame.time.Clock()
 from game import Settings
+ UIbranch
 
+
+ main
 settings = Settings()
 screen = pygame.display.set_mode((settings.width * 15, settings.height * 15))
 pygame.display.set_caption('Gluttonous')
@@ -70,13 +73,21 @@ def message_display(text, x, y, color=black):
     pygame.display.update()
 
 
+ UIbranch
 def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None, answer=None):  #####
+
+def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None, answer = None):#####
+ main
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if answer != None:
         global wrap
         wrap = answer
+ UIbranch
 
+
+        
+ main
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
         pygame.draw.rect(screen, active_color, (x, y, w, h))
         if click[0] == 1 and action != None:
@@ -100,7 +111,9 @@ def quitgame():
 
 
 def crash():
+
     pygame.mixer.Sound.play(crash_sound)
+ UIbranch
     message_display('CRASHED!', game.settings.width / 2 * 15, game.settings.height / 3 * 15, bright_red)
     i = 0
     while i < 999999:
@@ -125,6 +138,10 @@ def crash():
     ExitButton(canvas)# create a clickable button on the canvas
 
 
+    message_display('crashed', settings.width / 2 * 15, settings.height / 3 * 15, white)
+    time.sleep(1)
+ main
+
     root.mainloop()
 
 
@@ -142,6 +159,7 @@ def initial_interface():  # homepage
             if event.type == pygame.QUIT:
                 pygame.quit()
 
+ UIbranch
 
         SnakeImg = pygame.image.load('images/background.png')
         SnakeImg = pygame.transform.scale(SnakeImg, (display_width, display_height))
@@ -159,18 +177,33 @@ def initial_interface():  # homepage
         button('Wrap', 350, 420, 80, 40, green, bright_green, game_loop, 'human', True)
 
 
+
+        screen.fill(white)
+        message_display('Gluttonous', settings.width / 2 * 15, settings.height / 4 * 15)
+        button('No wrap', 80, 240, 80, 40, green, bright_green, game_loop, 'human', False)
+        button('Quit', 270, 240, 80, 40, red, bright_red, quitgame)
+        button('Wrap', 80+190/2, 300, 80, 40, green, bright_green, game_loop, 'human', True)####
+ main
         pygame.display.update()
         pygame.time.Clock().tick(15)
 
 
 def game_loop(player, fps=10):
+ UIbranch
     from game import Game  ######
+
+    from game import Game ######
+ main
     global game
     game = Game(wrap)
     game.restart_game()
     rect_len = game.settings.rect_len
     snake = game.snake
+ UIbranch
 
+
+    
+ main
     while not game.game_end():
         pygame.event.pump()
 
@@ -216,5 +249,9 @@ def human_move(snake):
 
 
 if __name__ == "__main__":
+ UIbranch
     initial_interface()
 
+
+    initial_interface()
+ main

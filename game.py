@@ -4,14 +4,20 @@ import numpy as np
 
 class Settings:
     def __init__(self):
-        self.width = 40
-        self.height = 24
+        self.width = 42
+        self.height = 25
         self.rect_len = 22
 
 
+ UIbranch
 # from main import wrap
 class Snake:
     def __init__(self, wrap):  #####
+=======
+#from main import wrap
+class Snake:
+    def __init__(self, wrap): #####
+ main
         self.settings = Settings()
         self.image_up = pygame.image.load('images/head_up.bmp')
         self.image_down = pygame.image.load('images/head_down.bmp')
@@ -66,7 +72,11 @@ class Snake:
         self.blit_tail(self.segments[-1][0] * rect_len, self.segments[-1][1] * rect_len, screen)
 
     def update(self):
+ UIbranch
         if self.facing == 'right':  ######
+
+        if self.facing == 'right':######
+ main
             self.position[0] += 1
         if self.facing == 'left':
             self.position[0] -= 1
@@ -75,6 +85,7 @@ class Snake:
         if self.facing == 'down':
             self.position[1] += 1
         if self.wrap == True:
+ UIbranch
             if self.position[0] >= self.settings.width:
                 self.position[0] = 0
             if self.position[0] < 0:
@@ -83,6 +94,16 @@ class Snake:
                 self.position[1] = 0
             if self.position[1] < 0:
                 self.position[1] = self.settings.height - 1
+=======
+            if self.position[0] >= self.settings.width: 
+                self.position [0] = 0
+            if self.position[0] < 0:
+                self.position [0] = self.settings.width-1
+            if self.position[1] >= self.settings.height:
+                self.position[1] = 0
+            if self.position[1] < 0:
+                self.position[1] = self.settings.height-1
+ main
         self.segments.insert(0, list(self.position))
 
 
@@ -96,9 +117,15 @@ class Strawberry():
 
     def random_pos(self, snake):
         self.style = str(random.randint(1, 8))
+
         self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')
         self.position[0] = random.randint(0, self.settings.width - 1)
         self.position[1] = random.randint(0, self.settings.height - 1)
+=======
+        self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')                
+        self.position[0] = random.randint(0, self.settings.width-1)
+        self.position[1] = random.randint(0, self.settings.height-1)
+ main
         self.position[0] = random.randint(9, 19)
         self.position[1] = random.randint(9, 19)
         if self.position in snake.segments:
@@ -115,6 +142,7 @@ class Game:
     """
     """
 
+
     def __init__(self, wrap):  ######
         self.settings = Settings()
         self.snake = Snake(wrap)
@@ -125,6 +153,19 @@ class Game:
                           3: 'right'}
         self.wrap = wrap
 
+    def __init__(self, wrap):######
+        self.settings = Settings()
+        self.snake = Snake(wrap)
+        self.strawberry = Strawberry(self.settings)
+        self.move_dict = {0 : 'up',
+                          1 : 'down',
+                          2 : 'left',
+                          3 : 'right'}
+        self.wrap = wrap
+
+
+        
+ main
     def restart_game(self):
         self.snake.initialize()
         self.strawberry.initialize()
@@ -175,8 +216,13 @@ class Game:
             return -1
 
         return reward
+ UIbranch
 
     def game_end(self):  #####
+
+    
+    def game_end(self):#####
+ main
         end = False
         if (self.snake.position[0] >= self.settings.width or self.snake.position[0] < 0) and self.wrap == False:
             end = True
