@@ -41,7 +41,7 @@ settings = Settings()
 screen = pygame.display.set_mode((settings.width * 15, settings.height * 15))
 pygame.display.set_caption('Gluttonous')
 
-crash_sound = pygame.mixer.Sound('./sound/end.wav') #assigning the crash sound
+crash_sound = pygame.mixer.Sound('./sound/sound_end.wav') #assigning the crash sound
 class HomeButton:#home button class
     def __init__(self, canvas, root):
         self.canvas = canvas
@@ -134,8 +134,7 @@ def tk_name():#Your name button class
 
     def click():#this is where the user types in their name
         user_text = T.get()
-        # myLabel = Label(root, text=user_text)
-        # myLabel.pack()
+      
 
         global button_name
         button_name = user_text
@@ -144,13 +143,13 @@ def tk_name():#Your name button class
 
         root.destroy()
 
-    one = Label(root, text="Enter your name")
-    one.config(font=("Courier", 17))
+    name = Label(root, text="Enter your name")
+    name.config(font=("Courier", 17))
 
     T = Entry(root, width=10, borderwidth=4, justify='center')
     b1 = Button(root, text="Submit", command=click)
 
-    one.pack()
+    name.pack()
     T.pack()
     b1.pack()
 
@@ -228,7 +227,6 @@ def tk_name():#Your name button class
 def tk_speed():#selecting speed
     global root
     root = Tk()
-    #root.geometry("350x170")
     root.resizable(width=False, height=False)
     root.wm_attributes("-topmost", 1)
     root.title("Speed")
@@ -239,13 +237,11 @@ def tk_speed():#selecting speed
 
 
 
-    one = Label(root, text="Enter speed \n between 10 and 19")
-    one.config(font=("Courier", 17))
+    speedscreen = Label(root, text="Enter speed \n between 10 and 19")
+    speedscreen.config(font=("Courier", 17))
     global T
     T = Entry(root, width=10, borderwidth=4, justify='center')
 
-    #b1 = Button(root, text="Submit", command=click)
-    #b2 = Button(root, text="Exit", command=root.destroy)
     canvas = Canvas(root, bd=0, highlightthickness=0)
     canvas.pack()
     canvas.create_image(250, 175, image=photo)
@@ -254,10 +250,9 @@ def tk_speed():#selecting speed
     SubmitButton(canvas)
     Exit2Button(canvas)
 
-    one.pack()
+    speedscreen.pack()
     T.pack()
-    #b1.pack()
-    #b2.pack()
+
     root.mainloop()
 
 
@@ -296,7 +291,7 @@ def crash(score):#the pop up window the game ends
     if user_name == "":  # IF user did not entered their name;
         user_name = "Outis"  # temporary name
 
-    message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
+    message_display('HAHA GET WRECKED', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)# crash message
     message_display(f'Score: {score}', game.settings.width / 2 * 15, game.settings.height / 3 * 15 + 60, white) \
  \
         # MODIFIED
@@ -324,11 +319,11 @@ def crash(score):#the pop up window the game ends
     f_name.close()
 
     # If correct, length of both lists should be equal
-    length = len(player_scores)  # Add new user name
+    length_of_scorefile= len(player_scores)  # Add new user name
 
     # BUBBLE SORT; in ascending order
-    for i in range(length):
-        for j in range(0, length - i - 1):
+    for i in range(length_of_scorefile):
+        for j in range(0, length_of_scorefile - i - 1):
             if player_scores[j] > player_scores[j + 1]:
                 temp = player_scores[j]
                 player_scores[j] = player_scores[j + 1]
@@ -338,12 +333,11 @@ def crash(score):#the pop up window the game ends
                 player_names[j] = player_names[j + 1]
                 player_names[j + 1] = temp
 
-    while length > 10:  # Limit the length of array to 10
-        # del player_scores[length-1]    For array of descending order
-        # del player_names[length-1]     For array of descending order
+    while length_of_scorefile > 10:  # Limit the length of array to 10
+        
         del player_scores[0]
         del player_names[0]
-        length -= 1
+        length_of_scorefile -= 1
 
     f = open(ranking_score, 'w')
     f.write(str(player_scores))
@@ -356,7 +350,7 @@ def crash(score):#the pop up window the game ends
 
 
 
-# crash message
+
 display_width = 900
 display_height = 550
 def initial_interface():  # homepage
@@ -382,7 +376,6 @@ def initial_interface():  # homepage
         y = 0
         gameDisplay = pygame.display.set_mode((display_width, display_height))
         gameDisplay.blit(SnakeImg, (x, y))
-        # message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
 
         button('Quit', 320, 480, 80, 40, red, bright_red, quitgame)
         button(speed_button, 80, 480, 80, 40, yellow, bright_yellow, tk_speed)
