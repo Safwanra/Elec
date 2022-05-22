@@ -124,7 +124,7 @@ def click():#this is where the user select the speed
         speed = user_text
         root.destroy()
 
-def tk_name():#Your name button class
+def tk_name():##creates a pop up to enter name 
     root = Tk()
     root.geometry("300x200")
     root.title("Your name")
@@ -216,7 +216,7 @@ def tk_name():#Your name button class
 
     i = 0
     while i < len(player_scores):
-        my_game.insert(parent='', index='end',  # iid=0, text='',
+        my_game.insert(parent='', index='end',
                        values=(ranking_order[i], player_names[i], player_scores[i]))
         i += 1
 
