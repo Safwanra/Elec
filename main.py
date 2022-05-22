@@ -41,7 +41,7 @@ settings = Settings()
 screen = pygame.display.set_mode((settings.width * 15, settings.height * 15))
 pygame.display.set_caption('Gluttonous')
 
-crash_sound = pygame.mixer.Sound('./sound/sound_end.wav') #assigning the crash sound
+crash_sound = pygame.mixer.Sound('./sound/end.wav') #assigning the crash sound
 class HomeButton:#home button class
     def __init__(self, canvas, root):
         self.canvas = canvas
