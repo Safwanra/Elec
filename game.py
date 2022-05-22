@@ -167,7 +167,11 @@ class Game:  ##Initialising the class Settings -> used to assign values for sett
         if self.snake.position == self.strawberry.position:
             self.strawberry.random_pos(self.snake)
             reward = 1
-            self.snake.score += 1
+            if self.wrap == True:
+                self.snake.score += 1 * self.speed
+            else:
+                self.snake.score += 1 * self.speed * 2 #score is doubled in no wrap mode
+
         else:
             self.snake.segments.pop()
             reward = 0
